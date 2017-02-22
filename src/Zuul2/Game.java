@@ -44,9 +44,9 @@ public class Game
 
         // create the rooms
         clearing = new Room("in the middle of a clearing in a forest");
-        icyForest = new Room("in a icy forest.");
+        icyForest = new Room("in a icy tundra.");
         icyHill = new Room("on top of an icy hill");
-        caveEntrance = new Room("infront an entrance of a cave. You can hear"
+        caveEntrance = new Room("infront an entrance of a cave. You can hear "
                 + "vicious roars from the cave");
         cave = new Room("in a cave");
         caveUnderground = new Room("under a cave");
@@ -75,7 +75,7 @@ public class Game
         caveUnderground.setExits("east", desertCave);
 
         desert.setExits("north", clearing);
-        desert.setExits("down", desertCave);
+        //desert.setExits("down", desertCave);
 
         desertCave.setExits("up", desert);
         desertCave.setExits("west", caveUnderground);
@@ -181,21 +181,18 @@ public class Game
                     if (commandWord.equals("eat"))
                     {
                         eat();
-
                     }
                     else
                     {
                         if (commandWord.equals("take"))
                         {
                             takeItem(command);
-
                         }
                         else
                         {
                             if (commandWord.equals("dig"))
                             {
                                 dig(command);
-
                             }
                             else
                             {
@@ -211,6 +208,11 @@ public class Game
         }
 
         return wantToQuit;
+    }
+    
+    private void setDesertExit()
+    {
+        
     }
 
     private void eat()
@@ -297,9 +299,22 @@ public class Game
                         + "got an infection and died." + "\n");
                 gameOver();
             }
+            
+             if ((command.getSecondWord().equals("ground"))
+                    && (area.contains("tundra")))
+             {
+                 System.out.println("You dug into the cold icy ground, "
+                        + "you died of hyperthermia." + "\n");
+                gameOver();
+             }
+                
+            
             else
             {
-                System.out.println("You can't dig here!");
+                if (!area.contains("desert"))
+                {
+                    System.out.println("You can't dig here!");
+                }
             }
         }
     }
@@ -371,7 +386,7 @@ public class Game
         }
 
     }
-    
+
     /**
      * Ends the game
      */
@@ -384,10 +399,10 @@ public class Game
         else
         {
             System.out.println("Game over!!");
-            
+
         }
         System.exit(0);
-        
+
     }
 
     /**

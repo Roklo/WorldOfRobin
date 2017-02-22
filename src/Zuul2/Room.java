@@ -17,7 +17,8 @@ import java.util.Set;
  * @author Michael Kölling and David J. Barnes
  * @version 2016.02.29
  */
-public class Room {
+public class Room
+{
 
     private String description;
     private HashMap<String, Room> exits;
@@ -33,6 +34,7 @@ public class Room {
     private Room upExit;
      */
     private int desertStat = 0;
+    private int tundraStat = 0;
 
     /**
      * Create a room described "description". Initially, it has no exits.
@@ -40,28 +42,28 @@ public class Room {
      *
      * @param description The room's description.
      */
-    public Room(String description) {
+    public Room(String description)
+    {
         this.description = description;
         exits = new HashMap<>();
     }
 
-    
     /**
      * Return a description of the area's exits, for example, "Exits: north
      * west".
      *
      * @return A description of the available exits.
      */
-    
-    public String getExitString() {
+    public String getExitString()
+    {
         String returnString = "Paths: ";
         Set<String> keys = exits.keySet();
-        for(String exit : keys)
+        for (String exit : keys)
         {
             returnString += " " + exit;
-                    }
+        }
         return returnString;
-        
+
         /*
         String exitString = "Paths: ";
         boolean north = false;
@@ -94,11 +96,11 @@ public class Room {
         }
 
         return exitString;
-        */
+         */
     }
-    
+
     /**
-     * 
+     *
      * @return Returning the status of the dessert area
      */
     public int getDesertStat()
@@ -117,9 +119,10 @@ public class Room {
      * @param up The up exit
      * @param down The sown exit
      */
-    public void setExits(String direction, Room neighbor) {
-       exits.put(direction, neighbor);
-       /*
+    public void setExits(String direction, Room neighbor)
+    {
+        exits.put(direction, neighbor);
+        /*
 
         if (north != null) {
             exits.put("north", north);
@@ -145,7 +148,7 @@ public class Room {
             exits.put("down", down);
             //downExit = down;
         }
-       */
+         */
 
     }
 
@@ -154,9 +157,10 @@ public class Room {
      * @param direction
      * @return
      */
-    public Room getExit(String direction) {
+    public Room getExit(String direction)
+    {
         return exits.get(direction);
-        
+
         /*
         if (direction.equals("north")) {
             return northExit;
@@ -171,13 +175,14 @@ public class Room {
             return westExit;
         }
         return null;
-        */
+         */
     }
 
     /**
      * @return The description of the room.
      */
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
@@ -187,7 +192,8 @@ public class Room {
      *
      * @return A description of the room, including exits.
      */
-    public String getLongDescription() {
+    public String getLongDescription()
+    {
         return "You are " + description + "\n"
                 + getExitString();
     }
@@ -196,29 +202,45 @@ public class Room {
     {
         desertStat = desertStat + 1;
     }
-    
-    public String somethingToEat() {
+
+    public String somethingToEat()
+    {
 
         return "You are not hungry";
     }
 
-    public String getDetailedLongDescription() {
+    public String getDetailedLongDescription()
+    {
         String scenery = " ";
-        if (description.contains("desert")) {
+        if (description.contains("desert"))
+        {
 
-            if (desertStat == 0) {
+            if (desertStat == 0)
+            {
                 scenery += "You can only see sand as far as the eye can see.";
             }
-            if (desertStat == 1) {
+            if (desertStat == 1)
+            {
                 scenery += "You see a small hole in the sand.";
             }
-            if (desertStat == 2) {
+            if (desertStat == 2)
+            {
                 scenery += "You see a big hole in the sand.";
             }
-            if (desertStat == 3) {
+            if (desertStat == 3)
+            {
                 scenery += "You see a huge hole in the sand, "
                         + "and an cave entrance.";
 
+            }
+        }
+
+        if (description.contains("tundra"))
+        {
+            if (tundraStat == 0)
+            {
+                scenery += "It's extremly cold, the ground is coverd in ice. "
+                        + "You see an steep icy hill in front of you.";
             }
         }
         return "You are " + description + scenery;
