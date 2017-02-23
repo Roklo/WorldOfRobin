@@ -12,19 +12,50 @@ package Zuul2;
 public class Item
 {
 
-    private String itemName;
-    private int itemWeight;
-
-    public String getItemSpec(String name, int weight)
+    private String description;
+    private double weight;
+    
+    
+    /**
+     * Creates an instance of Item with description and weight
+     * given by parameters
+     * @param description
+     * @param weight the weight of the item in kg
+     */
+    public Item(String description, double weight)
     {
-        itemName = name;
-        itemWeight = weight;
-        
-        return itemName;
+       this.description = description;
+       this.weight = weight;
     }
 
-    public int getWeight()
+    public String getDescription()
     {
-        return itemWeight;
+        return description;
     }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public double getWeight()
+    {
+        return weight;
+    }
+
+    public void setWeight(double weight)
+    {
+        this.weight = weight;
+    }
+
+    public String getAsString()
+    {
+        String asString = "Items: "
+                + this.getDescription()
+                + " Weight: "
+                + this.getWeight();
+        return asString;
+    }
+
+    
 }

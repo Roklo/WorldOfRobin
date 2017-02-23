@@ -23,6 +23,8 @@ public class Room
     private String description;
     private HashMap<String, Room> exits;
 
+    private Item item;
+
     /*
     private Room currentRoom;
     private String description;
@@ -34,7 +36,6 @@ public class Room
     private Room upExit;
      */
     private int desertStat = 0;
-    private int tundraStat = 0;
 
     /**
      * Create a room described "description". Initially, it has no exits.
@@ -46,6 +47,15 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
+        this.item = null;
+    }
+
+    public Room(String description, Item item)
+    {
+        this(description);
+
+        this.item = item;
+
     }
 
     /**
@@ -178,11 +188,23 @@ public class Room
          */
     }
 
+    public void addItem(Item item)
+    {
+        this.item = item;
+
+    }
+
+    public Item getItem()
+    {
+        return this.item;
+    }
+
     /**
      * @return The description of the room.
      */
     public String getDescription()
     {
+
         return description;
     }
 
@@ -194,8 +216,21 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + "\n"
+        String returnString = "Toy are" + description + ".\n"
                 + getExitString();
+
+        if (this.getItem() != null)
+        {
+            returnString += "\nThe room has an item; " 
+                    + this.getItem().getAsString();
+          
+        }
+        else
+        {
+            returnString += "\nThe room has no items"; 
+        }
+        return returnString;
+
     }
 
     public void addDesertStat()
@@ -232,15 +267,6 @@ public class Room
                 scenery += "You see a huge hole in the sand, "
                         + "and an cave entrance.";
 
-            }
-        }
-
-        if (description.contains("tundra"))
-        {
-            if (tundraStat == 0)
-            {
-                scenery += "It's extremly cold, the ground is coverd in ice. "
-                        + "You see an steep icy hill in front of you.";
             }
         }
         return "You are " + description + scenery;

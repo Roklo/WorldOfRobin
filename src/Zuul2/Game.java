@@ -44,9 +44,9 @@ public class Game
 
         // create the rooms
         clearing = new Room("in the middle of a clearing in a forest");
-        icyForest = new Room("in a icy tundra.");
+        icyForest = new Room("in a icy forest.");
         icyHill = new Room("on top of an icy hill");
-        caveEntrance = new Room("infront an entrance of a cave. You can hear "
+        caveEntrance = new Room("infront an entrance of a cave. You can hear"
                 + "vicious roars from the cave");
         cave = new Room("in a cave");
         caveUnderground = new Room("under a cave");
@@ -75,10 +75,17 @@ public class Game
         caveUnderground.setExits("east", desertCave);
 
         desert.setExits("north", clearing);
-        //desert.setExits("down", desertCave);
+        desert.setExits("down", desertCave);
 
+        //TODO: Change exit depending on desertStat
         desertCave.setExits("up", desert);
         desertCave.setExits("west", caveUnderground);
+
+        Item item = new Item("Book", 10);
+        clearing.addItem(item);
+
+        Item itemSand = new Item("Sand", 1);
+        desert.addItem(itemSand);
 
         currentRoom = clearing;  // start game at the clearing of the forest
     }
@@ -181,18 +188,21 @@ public class Game
                     if (commandWord.equals("eat"))
                     {
                         eat();
+
                     }
                     else
                     {
                         if (commandWord.equals("take"))
                         {
                             takeItem(command);
+
                         }
                         else
                         {
                             if (commandWord.equals("dig"))
                             {
                                 dig(command);
+
                             }
                             else
                             {
@@ -208,11 +218,6 @@ public class Game
         }
 
         return wantToQuit;
-    }
-    
-    private void setDesertExit()
-    {
-        
     }
 
     private void eat()
@@ -299,16 +304,15 @@ public class Game
                         + "got an infection and died." + "\n");
                 gameOver();
             }
-            
-             if ((command.getSecondWord().equals("ground"))
+
+            if ((command.getSecondWord().equals("ground"))
                     && (area.contains("tundra")))
-             {
-                 System.out.println("You dug into the cold icy ground, "
+            {
+                System.out.println("You dug into the cold icy ground, "
                         + "you died of hyperthermia." + "\n");
                 gameOver();
-             }
-                
-            
+            }
+
             else
             {
                 if (!area.contains("desert"))
@@ -318,11 +322,11 @@ public class Game
             }
         }
     }
-
-    /**
-     * Try to go in one direction. If there is an exit, enter the new room,
-     * otherwise print an error message.
-     */
+    
+        /**
+         * Try to go in one direction. If there is an exit, enter the new room,
+         * otherwise print an error message.
+         */
     private void goRoom(Command command)
     {
 
