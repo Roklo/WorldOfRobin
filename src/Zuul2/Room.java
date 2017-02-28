@@ -5,8 +5,6 @@ import java.util.Set;
 import java.util.Iterator;
 import java.util.HashSet;
 
-
-
 /**
  * Class Room - a room in an adventure game.
  *
@@ -28,18 +26,9 @@ public class Room
     private HashMap<String, Room> exits;
 
     private RoomInventory roomInventory;
-    private Item item;
+   // private RoomInventory items;
 
-    /*
-    private Room currentRoom;
-    private String description;
-    private Room northExit;
-    private Room southExit;
-    private Room eastExit;
-    private Room westExit;
-    private Room downExit;
-    private Room upExit;
-     */
+   
     private int desertStat = 0;
     private int caveStat = 0;
 
@@ -53,20 +42,13 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
-        //this.item = null;
-        roomInventory = new RoomInventory();
        
-    }
-
-    /*
-    public Room(String description, Item item)
-    {
-        this(description);
-
-        this.item = item;
+        roomInventory = new RoomInventory();
 
     }
-     */
+
+ 
+     
     /**
      * Return a description of the area's exits, for example, "Exits: north
      * west".
@@ -112,11 +94,12 @@ public class Room
      */
     public void setExits(String direction, Room neighbor)
     {
-        exits.put(direction, neighbor);   
+        exits.put(direction, neighbor);
     }
 
     /**
      * Get the exit directions in the current room
+     *
      * @param direction
      * @return
      */
@@ -124,7 +107,6 @@ public class Room
     {
         return exits.get(direction);
 
-        
     }
 
     public void addItem(Item item)
@@ -135,13 +117,14 @@ public class Room
 
     /**
      * Returns the item if it is available, otherwise it returns null.
+     *
      * @param name The name of the item to be returned.
      * @return The named item, or null if it is not in the room.
      */
     public Item getItem(String name)
     {
         return roomInventory.get(name);
-    } 
+    }
 
     /**
      * @return The description of the room.
@@ -163,18 +146,19 @@ public class Room
         String returnString = "You are " + description + "\n"
                 + getExitString();
 
+       
+
         if (!description.contains("desert"))
         {
             //TODO: this is the fix
             if (roomInventory.getLongDescription() != null)
             {
                 returnString += "\nYou also see: "
-                        + "You are " + description + ".\n" + getExitString() 
-                        + "\nItems in the room: " 
+                        + "You are " + description + ".\n" + getExitString()
+                        + "\nItems in the area: "
                         + roomInventory.getLongDescription();
-                        
-                      //  this.getItem().getAsString();
 
+                //  this.getItem().getAsString();
             }
             else
             {
@@ -223,32 +207,42 @@ public class Room
             if (desertStat == 0)
             {
                 scenery += "You can only see sand as far as the eye can see. "
-                        + "\n" + getExitString();
-
-                
-
+                        + "\n" + getExitString()
+                        + "\nYou also see: "
+                        + "You are " + description + ".\n" + getExitString()
+                        + "\nItems in the area: "
+                        + roomInventory.getLongDescription();
             }
+
             if (desertStat == 1)
             {
                 scenery += "You see a small hole in the sand."
-                        + "\n" + getExitString();
-
-                
+                        + "\n" + getExitString()
+                        + "\nYou also see: "
+                        + "You are " + description + ".\n" + getExitString()
+                        + "\nItems in the area: "
+                        + roomInventory.getLongDescription();
             }
+
             if (desertStat == 2)
             {
                 scenery += "You see a big hole in the sand."
-                        + "\n" + getExitString();
+                        + "\n" + getExitString()
+                        + "\nYou also see: "
+                        + "You are " + description + ".\n" + getExitString()
+                        + "\nItems in the area: "
+                        + roomInventory.getLongDescription();
 
-                
             }
             if (desertStat == 3)
             {
                 scenery += "You see a huge hole in the sand, "
                         + "and an cave entrance under the sand."
-                        + "\n" + getExitString();;
-
-                
+                        + "\n" + getExitString()
+                        + "\nYou also see: "
+                        + "You are " + description + ".\n" + getExitString()
+                        + "\nItems in the area: "
+                        + roomInventory.getLongDescription();
 
             }
 
@@ -256,14 +250,16 @@ public class Room
         return "You are " + description + scenery + returnString;
 
     }
-    
-     /**
-     * Removes and returns the item if it is available, otherwise it returns null.
+
+    /**
+     * Removes and returns the item if it is available, otherwise it returns
+     * null.
+     *
      * @param name The item to be removed.
      * @return The item if removed, null otherwise.
      */
     public Item removeItem(String name)
     {
         return roomInventory.remove(name);
-    }   
+    }
 }

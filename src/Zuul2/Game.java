@@ -87,14 +87,15 @@ public class Game
         desertCave.setExits("up", desert);
         desertCave.setExits("west", caveUnderground);
 
-        Item item = new Item("Book", 10);
-        clearing.addItem(item);
+        
+        
+        clearing.addItem(new Item("Book", 9));
 
-        Item itemSand = new Item("Sand", 1);
-        desert.addItem(itemSand);
+        
+        desert.addItem(new Item ("Sand", 1));
 
-        Item itemWater = new Item("Water", 1);
-        river.addItem(itemWater);
+        
+        river.addItem(new Item("Water", 1));
 
         currentRoom = clearing;  // start game at the clearing of the forest
     }
