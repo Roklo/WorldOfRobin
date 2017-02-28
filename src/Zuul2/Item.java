@@ -12,20 +12,22 @@ package Zuul2;
 public class Item
 {
 
+    private String name;
+
     private String description;
     private double weight;
-    
-    
+
     /**
-     * Creates an instance of Item with description and weight
-     * given by parameters
+     * Creates an instance of Item with description and weight given by
+     * parameters
+     *
      * @param description
      * @param weight the weight of the item in kg
      */
     public Item(String description, double weight)
     {
-       this.description = description;
-       this.weight = weight;
+        this.description = description;
+        this.weight = weight;
     }
 
     public String getDescription()
@@ -50,12 +52,11 @@ public class Item
 
     public String getAsString()
     {
-        String asString = "\n"
+        String asString = "\njk"
                 + this.getDescription()
                 + " Weight: "
                 + this.getWeight();
         return asString;
     }
 
-    
 }

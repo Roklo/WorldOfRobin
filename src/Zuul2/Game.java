@@ -22,15 +22,18 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private boolean gameWon;
+    private Player player;
 
     /**
      * Create the game and initialise its internal map.
      */
     public Game()
     {
+
         createRooms();
         parser = new Parser();
         gameWon = false;
+        player = new Player("Jak");
 
     }
 
@@ -40,22 +43,26 @@ public class Game
     private void createRooms()
     {
         Room clearing, icyForest, icyHill, caveEntrance, cave,
-                caveUnderground, desert, desertCave, finish;
+                caveUnderground, desert, desertCave, river, finish;
 
         // create the rooms
-        clearing = new Room(" in the middle of a clearing in a forest");
-        icyForest = new Room(" in a icy tundra, the ground is frozen solid.");
-        icyHill = new Room("on top of an icy hill");
+        clearing = new Room("in the middle of a clearing in a forest.");
+        icyForest = new Room("in a icy tundra, the ground is frozen solid.");
+        icyHill = new Room("on top of an icy hill.");
         caveEntrance = new Room("infront an entrance of a cave. ");
-        cave = new Room("in a cave");
-        caveUnderground = new Room("under a cave");
+        cave = new Room("in a cave.");
+        caveUnderground = new Room("under a cave.");
         desert = new Room("in a desert.");
         desertCave = new Room("in a cave under the sand.");
+        river = new Room("next to a large river.");
         finish = new Room("on the finish line.");
 
         // initialise room exits
+        river.setExits("west", clearing);
+        river.setExits("east", finish);
+
         clearing.setExits("north", icyForest);
-        clearing.setExits("east", finish);
+        clearing.setExits("east", river);
         clearing.setExits("south", desert);
         clearing.setExits("west", caveEntrance);
 
@@ -75,7 +82,6 @@ public class Game
 
         desert.setExits("north", clearing);
         desert.setExits("down", desertCave);
-        
 
         //TODO: Change exit depending on desertStat
         desertCave.setExits("up", desert);
@@ -86,6 +92,9 @@ public class Game
 
         Item itemSand = new Item("Sand", 1);
         desert.addItem(itemSand);
+
+        Item itemWater = new Item("Water", 1);
+        river.addItem(itemWater);
 
         currentRoom = clearing;  // start game at the clearing of the forest
     }
@@ -107,8 +116,6 @@ public class Game
         }
         System.out.println("Thank you for playing.  Good bye.");
     }
-    
-   
 
     /**
      * Prints the current location of the player and his exit options.
@@ -260,8 +267,19 @@ public class Game
                 // if there is no second word, we don't know where to go...
                 System.out.println("Take what?");
                 return;
-
             }
+            String itemName = command.getSecondWord();
+            Item item = player.pickUpItem(itemName);
+
+            if (item == null)
+            {
+                System.out.println("Can't pick up the item: " + itemName);
+            }
+            else
+            {
+                System.out.println("Picked up " + item.getDescription());
+            }
+
         }
     }
 
@@ -324,11 +342,11 @@ public class Game
             }
         }
     }
-    
-        /**
-         * Try to go in one direction. If there is an exit, enter the new room,
-         * otherwise print an error message.
-         */
+
+    /**
+     * Try to go in one direction. If there is an exit, enter the new room,
+     * otherwise print an error message.
+     */
     private void goRoom(Command command)
     {
 
@@ -345,21 +363,6 @@ public class Game
 
             // Try to leave current room.
             Room nextRoom = currentRoom.getExit(direction);
-            /*
-        Room nextRoom = null;
-        if (direction.equals("north")) {
-            nextRoom = currentRoom.getExit("north");
-        }
-        if (direction.equals("east")) {
-            nextRoom = currentRoom.getExit("east");
-        }
-        if (direction.equals("south")) {
-            nextRoom = currentRoom.getExit("south");
-        }
-        if (direction.equals("west")) {
-            nextRoom = currentRoom.getExit("west");
-        }
-             */
 
             if (nextRoom == null)
             {
@@ -367,30 +370,10 @@ public class Game
             }
             else
             {
-
                 currentRoom = nextRoom;
-                System.out.println("You are " + currentRoom.getDescription());
-                System.out.print("Exits: ");
-                if (currentRoom.getExit("north") != null)
-                {
-                    System.out.print("north ");
-                }
-                if (currentRoom.getExit("east") != null)
-                {
-                    System.out.print("east ");
-                }
-                if (currentRoom.getExit("south") != null)
-                {
-                    System.out.print("south ");
-                }
-                if (currentRoom.getExit("west") != null)
-                {
-                    System.out.print("west ");
-                }
-                System.out.println();
+                printLocationInfo();
             }
         }
-
     }
 
     /**

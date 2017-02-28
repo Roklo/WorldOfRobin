@@ -2,6 +2,10 @@ package Zuul2;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Iterator;
+import java.util.HashSet;
+
+
 
 /**
  * Class Room - a room in an adventure game.
@@ -23,6 +27,7 @@ public class Room
     private String description;
     private HashMap<String, Room> exits;
 
+    private RoomInventory roomInventory;
     private Item item;
 
     /*
@@ -48,7 +53,9 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
-        this.item = null;
+        //this.item = null;
+        roomInventory = new RoomInventory();
+       
     }
 
     /*
@@ -59,8 +66,7 @@ public class Room
         this.item = item;
 
     }
-    */
-
+     */
     /**
      * Return a description of the area's exits, for example, "Exits: north
      * west".
@@ -73,43 +79,14 @@ public class Room
         Set<String> keys = exits.keySet();
         for (String exit : keys)
         {
+            //TODO : The following line does not work as intended
+            if ((description.contains("desert")) && (getDesertStat() == 3))
+            {
+                returnString += " " + exit;
+            }
             returnString += " " + exit;
         }
         return returnString;
-
-        /*
-        String exitString = "Paths: ";
-        boolean north = false;
-        boolean east = false;
-        boolean south = false;
-        boolean west = false;
-
-        if (northExit != null) {
-            exitString += "north ";
-            north = true;
-        }
-        if (eastExit != null) {
-            exitString += "east ";
-        }
-        if (southExit != null) {
-            exitString += "south ";
-        }
-        if (westExit != null) {
-
-            exitString += "west ";
-        }
-        if (upExit != null) {
-            exitString += "up";
-        }
-        if (downExit !=) {
-            if (north == false && east == false
-                    && south == false && west == false) {
-                exitString += "There are noe exits!";
-            }
-        }
-
-        return exitString;
-         */
     }
 
     /**
@@ -132,49 +109,14 @@ public class Room
     /**
      * Define the exits of this room. Every direction either leads to another
      * room or is null (no exit there).
-     *
-     * @param north The north exit.
-     * @param east The east east.
-     * @param south The south exit.
-     * @param west The west exit.
-     * @param up The up exit
-     * @param down The sown exit
      */
     public void setExits(String direction, Room neighbor)
     {
-        exits.put(direction, neighbor);
-        /*
-
-        if (north != null) {
-            exits.put("north", north);
-            // northExit = north;
-        }
-        if (east != null) {
-            exits.put("east", east);
-            //eastExit = east;
-        }
-        if (south != null) {
-            exits.put("south", south);
-            //southExit = south;
-        }
-        if (west != null) {
-            exits.put("west", west);
-            //westExit = west;
-        }
-        if (up != null) {
-            exits.put("up", up);
-            //upExit = up;
-        }
-        if (down != null) {
-            exits.put("down", down);
-            //downExit = down;
-        }
-         */
-
+        exits.put(direction, neighbor);   
     }
 
     /**
-     *
+     * Get the exit directions in the current room
      * @param direction
      * @return
      */
@@ -182,21 +124,7 @@ public class Room
     {
         return exits.get(direction);
 
-        /*
-        if (direction.equals("north")) {
-            return northExit;
-        }
-        if (direction.equals("east")) {
-            return eastExit;
-        }
-        if (direction.equals("south")) {
-            return southExit;
-        }
-        if (direction.equals("west")) {
-            return westExit;
-        }
-        return null;
-         */
+        
     }
 
     public void addItem(Item item)
@@ -205,10 +133,15 @@ public class Room
 
     }
 
-    public Item getItem()
+    /**
+     * Returns the item if it is available, otherwise it returns null.
+     * @param name The name of the item to be returned.
+     * @return The named item, or null if it is not in the room.
+     */
+    public Item getItem(String name)
     {
-        return this.item;
-    }
+        return roomInventory.get(name);
+    } 
 
     /**
      * @return The description of the room.
@@ -227,16 +160,13 @@ public class Room
      */
     public String getLongDescription()
     {
-        String returnString = "You are" + description + ".\n"
+        String returnString = "You are " + description + "\n"
                 + getExitString();
-
-        
-        
 
         if (!description.contains("desert"))
         {
-
-            if (this.getItem() != null)
+            //TODO: this is the fix
+            if (roomInventory.getLongDescription() != null)
             {
                 returnString += "\nYou also see: "
                         + this.getItem().getAsString();
@@ -246,7 +176,6 @@ public class Room
             {
                 returnString += "\nThe room has no items";
             }
-
         }
         return returnString;
     }
@@ -264,19 +193,17 @@ public class Room
 
     public String getDetailedLongDescription()
     {
-        
+
         String returnString = " ";
 
-        
         String scenery = " ";
 
-        
-        
         if (description.contains("entance"))
         {
             if (caveStat == 0)
             {
-                scenery += "You can hear vicious roars from the cave.";
+                scenery += "You can hear vicious roars from the cave."
+                        + "\n" + getExitString();
             }
 
             if (caveStat == 1)
@@ -291,49 +218,33 @@ public class Room
 
             if (desertStat == 0)
             {
-                scenery += "You can only see sand as far as the eye can see.";
+                scenery += "You can only see sand as far as the eye can see. "
+                        + "\n" + getExitString();
 
-                if (this.getItem() != null)
-                {
-                    returnString += "\nYou also see some items: "
-                            + this.getItem().getAsString();
-
-                }
+                
 
             }
             if (desertStat == 1)
             {
-                scenery += "You see a small hole in the sand.";
-                
-                if (this.getItem() != null)
-                {
-                    returnString += "\nYou also see some items: "
-                            + this.getItem().getAsString();
+                scenery += "You see a small hole in the sand."
+                        + "\n" + getExitString();
 
-                }
+                
             }
             if (desertStat == 2)
             {
-                scenery += "You see a big hole in the sand.";
-                
-                if (this.getItem() != null)
-                {
-                    returnString += "\nYou also see some items: "
-                            + this.getItem().getAsString();
+                scenery += "You see a big hole in the sand."
+                        + "\n" + getExitString();
 
-                }
+                
             }
             if (desertStat == 3)
             {
                 scenery += "You see a huge hole in the sand, "
-                        + "and an cave entrance under the sand.";
-                
-                if (this.getItem() != null)
-                {
-                    returnString += "\nYou also see some items: "
-                            + this.getItem().getAsString();
+                        + "and an cave entrance under the sand."
+                        + "\n" + getExitString();;
 
-                }
+                
 
             }
 
@@ -341,5 +252,14 @@ public class Room
         return "You are " + description + scenery + returnString;
 
     }
-
+    
+     /**
+     * Removes and returns the item if it is available, otherwise it returns null.
+     * @param name The item to be removed.
+     * @return The item if removed, null otherwise.
+     */
+    public Item removeItem(String name)
+    {
+        return roomInventory.remove(name);
+    }   
 }
