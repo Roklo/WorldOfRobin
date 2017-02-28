@@ -129,7 +129,7 @@ public class Room
 
     public void addItem(Item item)
     {
-        this.item = item;
+        roomInventory.put(item.getDescription(), item);
 
     }
 
@@ -169,7 +169,11 @@ public class Room
             if (roomInventory.getLongDescription() != null)
             {
                 returnString += "\nYou also see: "
-                        + this.getItem().getAsString();
+                        + "You are " + description + ".\n" + getExitString() 
+                        + "\nItems in the room: " 
+                        + roomInventory.getLongDescription();
+                        
+                      //  this.getItem().getAsString();
 
             }
             else

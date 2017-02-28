@@ -13,13 +13,14 @@ import java.util.HashMap;
  */
 public class Player
 {
-
+private RoomInventory roomInventory;
     private Room currentRoom;
     //private HashMap<String, Integer> inventory = new HashMap<>();
     private String name;
-    private Inventory items = new Inventory();
+    
     private double maxWeight;
     
+
 
     /**
      * Creats an instance of Player with the name Jak.
@@ -28,6 +29,7 @@ public class Player
      */
     public Player(String name)
     {
+        
         this.name = name;
         this.maxWeight = 1;        
     }
@@ -40,7 +42,7 @@ public class Player
      */
     public String getItemsString()
     {
-        return "You are carrying: " + items.getLongDescription();
+        return "You are carrying: " + roomInventory.getLongDescription();
     }
     
     
@@ -53,7 +55,7 @@ public class Player
     {
         if(canPickItem(itemName)) {
             Item item = currentRoom.removeItem(itemName);
-            items.put(itemName, item);            
+            roomInventory.put(itemName, item);            
             return item;
         } 
         else {
@@ -69,7 +71,7 @@ public class Player
      */
     public Item dropItem(String itemName)
     {
-        Item item = items.remove(itemName);
+        Item item = roomInventory.remove(itemName);
         if(item != null) {
             currentRoom.addItem(item);            
         }
@@ -90,7 +92,7 @@ public class Player
             canPick = false;
         }
         else {
-            double totalWeight = items.getTotalWeight() + item.getWeight();
+            double totalWeight = roomInventory.getTotalWeight() + item.getWeight();
             if(totalWeight > maxWeight) {
                 canPick = false;
             }
