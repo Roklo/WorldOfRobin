@@ -36,6 +36,7 @@ public class Room
     private Room upExit;
      */
     private int desertStat = 0;
+    private int caveStat = 0;
 
     /**
      * Create a room described "description". Initially, it has no exits.
@@ -116,6 +117,14 @@ public class Room
     public int getDesertStat()
     {
         return desertStat;
+    }
+
+    /**
+     * @return Returning the status if the cave area
+     */
+    public int getCaveStat()
+    {
+        return caveStat;
     }
 
     /**
@@ -216,21 +225,27 @@ public class Room
      */
     public String getLongDescription()
     {
-        String returnString = "Toy are" + description + ".\n"
+        String returnString = "You are" + description + ".\n"
                 + getExitString();
 
-        if (this.getItem() != null)
+        returnString = "";
+
+        if (!description.contains("desert"))
         {
-            returnString += "\nThe room has an item; " 
-                    + this.getItem().getAsString();
-          
-        }
-        else
-        {
-            returnString += "\nThe room has no items"; 
+
+            if (this.getItem() != null)
+            {
+                returnString += "\nYou also see: "
+                        + this.getItem().getAsString();
+
+            }
+            else
+            {
+                returnString += "\nThe room has no items";
+            }
+
         }
         return returnString;
-
     }
 
     public void addDesertStat()
@@ -247,6 +262,21 @@ public class Room
     public String getDetailedLongDescription()
     {
         String scenery = " ";
+
+        if (description.contains("entance"))
+        {
+            if (caveStat == 0)
+            {
+                scenery += "You can hear vicious roars from the cave.";
+            }
+
+            if (caveStat == 1)
+            {
+                scenery += "";
+            }
+
+        }
+
         if (description.contains("desert"))
         {
 
@@ -265,9 +295,10 @@ public class Room
             if (desertStat == 3)
             {
                 scenery += "You see a huge hole in the sand, "
-                        + "and an cave entrance.";
+                        + "and an cave entrance under the sand.";
 
             }
+
         }
         return "You are " + description + scenery;
 

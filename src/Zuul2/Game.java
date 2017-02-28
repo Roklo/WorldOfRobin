@@ -44,10 +44,9 @@ public class Game
 
         // create the rooms
         clearing = new Room("in the middle of a clearing in a forest");
-        icyForest = new Room("in a icy forest.");
+        icyForest = new Room("in a icy tundra, the ground is frozen solid.");
         icyHill = new Room("on top of an icy hill");
-        caveEntrance = new Room("infront an entrance of a cave. You can hear"
-                + "vicious roars from the cave");
+        caveEntrance = new Room("infront an entrance of a cave. ");
         cave = new Room("in a cave");
         caveUnderground = new Room("under a cave");
         desert = new Room("in a desert.");
