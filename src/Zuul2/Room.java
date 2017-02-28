@@ -51,6 +51,7 @@ public class Room
         this.item = null;
     }
 
+    /*
     public Room(String description, Item item)
     {
         this(description);
@@ -58,6 +59,7 @@ public class Room
         this.item = item;
 
     }
+    */
 
     /**
      * Return a description of the area's exits, for example, "Exits: north
@@ -228,7 +230,8 @@ public class Room
         String returnString = "You are" + description + ".\n"
                 + getExitString();
 
-        returnString = "";
+        
+        
 
         if (!description.contains("desert"))
         {
@@ -261,8 +264,14 @@ public class Room
 
     public String getDetailedLongDescription()
     {
+        
+        String returnString = " ";
+
+        
         String scenery = " ";
 
+        
+        
         if (description.contains("entance"))
         {
             if (caveStat == 0)
@@ -283,24 +292,53 @@ public class Room
             if (desertStat == 0)
             {
                 scenery += "You can only see sand as far as the eye can see.";
+
+                if (this.getItem() != null)
+                {
+                    returnString += "\nYou also see some items: "
+                            + this.getItem().getAsString();
+
+                }
+
             }
             if (desertStat == 1)
             {
                 scenery += "You see a small hole in the sand.";
+                
+                if (this.getItem() != null)
+                {
+                    returnString += "\nYou also see some items: "
+                            + this.getItem().getAsString();
+
+                }
             }
             if (desertStat == 2)
             {
                 scenery += "You see a big hole in the sand.";
+                
+                if (this.getItem() != null)
+                {
+                    returnString += "\nYou also see some items: "
+                            + this.getItem().getAsString();
+
+                }
             }
             if (desertStat == 3)
             {
                 scenery += "You see a huge hole in the sand, "
                         + "and an cave entrance under the sand.";
+                
+                if (this.getItem() != null)
+                {
+                    returnString += "\nYou also see some items: "
+                            + this.getItem().getAsString();
+
+                }
 
             }
 
         }
-        return "You are " + description + scenery;
+        return "You are " + description + scenery + returnString;
 
     }
 

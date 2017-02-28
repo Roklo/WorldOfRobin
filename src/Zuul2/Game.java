@@ -43,14 +43,14 @@ public class Game
                 caveUnderground, desert, desertCave, finish;
 
         // create the rooms
-        clearing = new Room("in the middle of a clearing in a forest");
-        icyForest = new Room("in a icy tundra, the ground is frozen solid.");
+        clearing = new Room(" in the middle of a clearing in a forest");
+        icyForest = new Room(" in a icy tundra, the ground is frozen solid.");
         icyHill = new Room("on top of an icy hill");
         caveEntrance = new Room("infront an entrance of a cave. ");
         cave = new Room("in a cave");
         caveUnderground = new Room("under a cave");
         desert = new Room("in a desert.");
-        desertCave = new Room("in a cave under the desert.");
+        desertCave = new Room("in a cave under the sand.");
         finish = new Room("on the finish line.");
 
         // initialise room exits
@@ -75,6 +75,7 @@ public class Game
 
         desert.setExits("north", clearing);
         desert.setExits("down", desertCave);
+        
 
         //TODO: Change exit depending on desertStat
         desertCave.setExits("up", desert);
@@ -106,6 +107,8 @@ public class Game
         }
         System.out.println("Thank you for playing.  Good bye.");
     }
+    
+   
 
     /**
      * Prints the current location of the player and his exit options.

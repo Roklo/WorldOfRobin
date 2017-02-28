@@ -50,7 +50,7 @@ public class Item
 
     public String getAsString()
     {
-        String asString = "Items: "
+        String asString = "\n"
                 + this.getDescription()
                 + " Weight: "
                 + this.getWeight();
